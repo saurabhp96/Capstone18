@@ -5,14 +5,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pantry extends AppCompatActivity {
 
     ListView pantryList;
+    List<Ingredient> ingredientList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,69 +29,27 @@ public class Pantry extends AppCompatActivity {
         setContentView(R.layout.activity_pantry);
         pantryList=(ListView)findViewById(R.id.pantry_list);
 
-        File file=new File(getFilesDir(),"pantry.txt");
 
-        ListAdapter adapter=new ListAdapter() {
-            @Override
-            public boolean areAllItemsEnabled() {
-                return false;
+        try {
+            FileInputStream inputStream=openFileInput("pantry.txt");
+            BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(inputStream));
+            ingredientList=new ArrayList<Ingredient>();
+            String line=null;
+            while((line=bufferedReader.readLine())!=null) {
+                String[] tokens = line.split(";");
+                ingredientList.add(new Ingredient(tokens[0], Double.parseDouble(tokens[1]), tokens[2]));
             }
+            bufferedReader.close();
+            inputStream.close();
 
-            @Override
-            public boolean isEnabled(int i) {
-                return false;
-            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void registerDataSetObserver(DataSetObserver dataSetObserver) {
 
-            }
-
-            @Override
-            public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
-            }
-
-            @Override
-            public int getCount() {
-                return 0;
-            }
-
-            @Override
-            public Object getItem(int i) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int i) {
-                return 0;
-            }
-
-            @Override
-            public boolean hasStableIds() {
-                return false;
-            }
-
-            @Override
-            public View getView(int i, View view, ViewGroup viewGroup) {
-                return null;
-            }
-
-            @Override
-            public int getItemViewType(int i) {
-                return 0;
-            }
-
-            @Override
-            public int getViewTypeCount() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-        };
+        ListAdapter adapter=new ArrayAdapter<Ingredient>(this,R.layout.pantry_item,ingredientList);
         pantryList.setAdapter(adapter);
 
 

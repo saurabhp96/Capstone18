@@ -7,10 +7,10 @@ package com.example.capstone18.capstone;
 public class Ingredient {
 
     private String name;
-    private int quantity;
+    private double quantity;
     private String measurementUnit;
 
-    public Ingredient(String name, int quantity, String measurementUnit) {
+    public Ingredient(String name, double quantity, String measurementUnit) {
         this.name = name;
         this.quantity = quantity;
         this.measurementUnit = measurementUnit;
@@ -24,7 +24,7 @@ public class Ingredient {
         this.name = name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
