@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Capstone</string>
+    <string name="add">add</string>
     <string name="API_Key">K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep</string>
+    <string name="lb">lb</string>
+    <string name="gram">gram</string>
+    <string name="kilogram">kg</string>
+    <string name="physical_units">units</string>
+    <string-array name="measurementUnits">
+        <item>lb</item>
+        <item>gram</item>
+        <item>kg</item>
+        <item>units</item>
+    </string-array>
 </resources>

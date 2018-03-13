@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +21,8 @@ import java.util.List;
 
 public class Pantry extends AppCompatActivity {
 
-    public static int EDIT_INTENT =1;
+    public static final int EDIT_INTENT =1;
+    public static final int ADD_INTENT=2;
 
     ListView pantryList;
     List<Ingredient> ingredientList;
@@ -80,6 +82,7 @@ public class Pantry extends AppCompatActivity {
     public void editIngredient(int i) {
         Bundle bundle=new Bundle();
         Ingredient ingredient=ingredientList.get(i);
+        bundle.putInt(AddEditIngredient.ING_INDEX,i);
         bundle.putString(AddEditIngredient.ING_NAME,ingredient.getName());
         bundle.putString(AddEditIngredient.ING_UNIT,ingredient.getMeasurementUnit());
         bundle.putDouble(AddEditIngredient.ING_AMOUNT,ingredient.getQuantity());
@@ -91,10 +94,27 @@ public class Pantry extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode!=RESULT_OK)
+            return;
+
+        Bundle bundle=data.getExtras();
+        if(bundle==null)
+            return;
 
         if(requestCode==EDIT_INTENT){
+            String name=bundle.getString(AddEditIngredient.ING_NAME);
+            String unit=bundle.getString(AddEditIngredient.ING_UNIT);
+            double amount=bundle.getDouble(AddEditIngredient.ING_AMOUNT);
+
+        }
+        else if(requestCode==ADD_INTENT){
 
 
         }
+        else{
+            Toast.makeText(this,"Error, with returning from activity",Toast.LENGTH_LONG);
+            return;
+        }
+        pantryList.setAdapter(new ArrayAdapter<Ingredient>(this,R.layout.pantry_item,ingredientList));
     }
 }
