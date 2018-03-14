@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.capstone18.capstone.MainActivity">
 
     <TextView
-        android:layout_width="242dp"
-        android:layout_height="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Name of our project"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.605"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183" />
+        android:layout_gravity="center_horizontal"/>
 
     <Button
         android:id="@+id/pantryButton"
@@ -24,7 +22,8 @@
         android:layout_height="wrap_content"
         android:text="Edit Pantry"
         tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="268dp" />
+        tools:layout_editor_absoluteY="268dp"
+        android:layout_gravity="center_horizontal"/>
 
     <Button
         android:id="@+id/recipesButton"
@@ -32,6 +31,14 @@
         android:layout_height="wrap_content"
         android:text="Get Recipes"
         tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="268dp" />
+        tools:layout_editor_absoluteY="268dp"
+        android:layout_gravity="center_horizontal"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/shoppingListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shopping List"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

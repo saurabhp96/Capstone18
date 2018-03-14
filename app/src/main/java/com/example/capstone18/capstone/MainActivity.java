@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button recipeButton=findViewById(R.id.recipesButton);
         Button pantryButton=findViewById(R.id.pantryButton);
+        Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
 
         recipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent pantryIntent=new Intent(MainActivity.this,Pantry.class);
                 startActivity(pantryIntent);
+            }
+        });
+
+        shoppingListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shoppingListIntent = new Intent (MainActivity.this, ShoppingList.class);
+                startActivity(shoppingListIntent);
             }
         });
 

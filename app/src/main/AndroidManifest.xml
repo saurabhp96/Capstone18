@@ -19,6 +19,7 @@
         <activity android:name=".Pantry" />
         <activity android:name=".Recipes" />
         <activity android:name=".AddEditIngredient"></activity>
+        <activity android:name=".ShoppingList"></activity>
     </application>
 
 </manifest>
