@@ -28,7 +28,7 @@ public class AddEditIngredient extends AppCompatActivity {
         ingredientName=(EditText)findViewById(R.id.ing_name);
         ingredientAmount=(EditText)findViewById(R.id.ing_amount);
         radioGroup=(RadioGroup)findViewById(R.id.radio_group_unit);
-        int selected=radioGroup.getCheckedRadioButtonId();
+
 
         Bundle bundle=getIntent().getExtras();
 
@@ -44,8 +44,6 @@ public class AddEditIngredient extends AppCompatActivity {
             }
 
             ingredientName.setEnabled(false);
-
-
         }
 
 
@@ -56,7 +54,7 @@ public class AddEditIngredient extends AppCompatActivity {
         String inputAmount=ingredientAmount.getText().toString();
         int selectedId=radioGroup.getCheckedRadioButtonId();
         if(name==null||inputAmount==null||selectedId==-1){
-            Toast.makeText(this,"All fields are required",Toast.LENGTH_LONG);
+            Toast.makeText(this,"All fields are required",Toast.LENGTH_LONG).show();
             return;
         }
 

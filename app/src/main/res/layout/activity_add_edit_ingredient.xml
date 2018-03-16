@@ -51,21 +51,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="kilogram" />
+            android:text="@string/kilogram" />
 
         <RadioButton
             android:id="@+id/radio_gram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="gram" />
+            android:text="@string/gram" />
 
         <RadioButton
             android:id="@+id/radio_lb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="lb (pound)" />
+            android:text="@string/lb" />
     </RadioGroup>
 
     <EditText
@@ -97,7 +97,7 @@
         android:layout_marginBottom="124dp"
         android:layout_marginStart="44dp"
         android:onClick="savePressed"
-        android:text="Save"
+        android:text="@android:string/ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -108,7 +108,7 @@
         android:layout_marginBottom="124dp"
         android:layout_marginStart="112dp"
         android:onClick="cancelPressed"
-        android:text="Cancel"
+        android:text="@android:string/no"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_save" />
 
