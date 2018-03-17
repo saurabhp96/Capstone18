@@ -50,11 +50,13 @@ public class AddEditIngredient extends AppCompatActivity {
     }
 
     public void savePressed(View view){
+        ingredientName.setEnabled(!ingredientName.isEnabled());
         String name=ingredientName.getText().toString();
         String inputAmount=ingredientAmount.getText().toString();
         int selectedId=radioGroup.getCheckedRadioButtonId();
         if(name==null||inputAmount==null||selectedId==-1){
             Toast.makeText(this,"All fields are required",Toast.LENGTH_LONG).show();
+            ingredientName.setEnabled(!ingredientName.isEnabled());
             return;
         }
 

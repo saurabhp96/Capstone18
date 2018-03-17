@@ -47,11 +47,16 @@ public class Ingredient {
 
         Ingredient that = (Ingredient) o;
 
-        return name.equals(that.name);
+        return name.equalsIgnoreCase(that.name);
     }
 
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.name+": "+this.quantity+" "+this.measurementUnit;
     }
 }

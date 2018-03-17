@@ -184,6 +184,10 @@ public class Pantry extends AppCompatActivity {
         String kg=getString(R.string.kilogram);
         String gram=getString(R.string.gram);
 
+        if(from.equals(to)){
+            return 1.0;
+        }
+
         if(from.equals(lb)){
             if(to.equals(kg)){
                 return 0.45359237;
