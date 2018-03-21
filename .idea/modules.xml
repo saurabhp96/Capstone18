@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Capstone.iml" filepath="$PROJECT_DIR$/Capstone.iml" />
+      <module fileurl="file://C:\Users\Veritias\Google Drive\CS Projects\Capstone18\Capstone.iml" filepath="C:\Users\Veritias\Google Drive\CS Projects\Capstone18\Capstone.iml" />
       <module fileurl="file://$PROJECT_DIR$/Capstone18.iml" filepath="$PROJECT_DIR$/Capstone18.iml" />
+      <module fileurl="file://C:\Users\Veritias\Google Drive\CS Projects\Capstone18\Capstone18.iml" filepath="C:\Users\Veritias\Google Drive\CS Projects\Capstone18\Capstone18.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Veritias\Google Drive\CS Projects\Capstone18\app\app.iml" filepath="C:\Users\Veritias\Google Drive\CS Projects\Capstone18\app\app.iml" />
     </modules>
   </component>
 </project>
