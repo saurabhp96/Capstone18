@@ -12,4 +12,14 @@
         <item>kg</item>
         <item>units</item>
     </string-array>
+    <string-array name="cuisines">
+        <item>Indian</item>
+        <item>American</item>
+        <item>Italian</item>
+        <item>Chinese</item>
+        <item>French</item>
+        <item>Eastern European</item>
+        <item>Korean</item>
+        <item>Mexican</item>
+    </string-array>
 </resources>
