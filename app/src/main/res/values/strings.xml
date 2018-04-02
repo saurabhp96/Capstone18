@@ -6,7 +6,9 @@
     <string name="gram">gram</string>
     <string name="kilogram">kg</string>
     <string name="physical_units">units</string>
-    <string name="pesc">pesceterian</string>
+    <string name="pesc">Pesceterian</string>
+    <string name="veg">Vegeterian</string>
+    <string name="exclude">Exclude Ingredients:</string>
     <string-array name="measurementUnits">
         <item>lb</item>
         <item>gram</item>

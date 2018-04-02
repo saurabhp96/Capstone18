@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.capstone18.capstone.RecipeOptions">
 
     <TextView
@@ -24,16 +25,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
         android:text="Cuisine:"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <GridView
         android:id="@+id/cuisine_grid"
         android:layout_width="343dp"
-        android:layout_height="151dp"
+        android:layout_height="176dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="100dp"
+        android:choiceMode="multipleChoice"
+        android:numColumns="auto_fit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="RadioButton"
-            tools:text="Vegeterian" />
+            android:text="@string/veg" />
 
         <RadioButton
             android:id="@+id/pesc_button"
@@ -95,5 +98,45 @@
         android:text="@android:string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/exclude_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="@string/exclude"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/exc_input"
+        android:layout_width="177dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:ems="10"
+        android:hint="peanuts"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/exclude_title" />
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="55dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="92dp"
+        android:layout_marginStart="8dp"
+        android:onClick="addPressed"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/exc_input" />
+
+    <TextView
+        android:id="@+id/excluded_ing_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exclude_title" />
 
 </android.support.constraint.ConstraintLayout>
