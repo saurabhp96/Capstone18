@@ -18,8 +18,18 @@ import com.squareup.okhttp.Response;
 public class Recipes extends AppCompatActivity {
     String jsonReturn;
     TextView txtString;
+    public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx";
+    public String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
-    public String url= "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ranking=1&number=5&ingredients=apples%2Cflour%2Csugar";
+    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=2";
+    public String urlIngredients = "";
+    public String url= "";
+
+    // new base call
+    //"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true
+    // &intolerances=peanut%2C+shellfish&type=main+course&maxFat=100&maxCalories=1500&minProtein=5
+    // &maxProtein=100&cuisine=american&excludeIngredients=coconut%2C+mango&instructionsRequired=true&minFat=5
+    // &includeIngredients=onions%2C+lettuce%2C+tomato&minCarbs=5&maxCarbs=100&offset=0&query=burger&minCalories=150&addRecipeInformation=true&number=10&ranking=0"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +42,23 @@ public class Recipes extends AppCompatActivity {
 
         // Recipe Button
         Button button = (Button) findViewById(R.id.button);
+        // Code here executes on main thread after user presses button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+
                 txtString = (TextView)findViewById(R.id.textString);
+
+                // Create URL string
+                String ingredients[] = {"apple, sugar, flour"};
+                urlIngredients = "&includeIngredients=";
+                for(int i = 0; i < ingredients.length; i++){
+                    urlIngredients = urlIngredients + ingredients[i];
+                    if(i < ingredients.length -1)
+                        urlIngredients = urlIngredients +"%2C+";
+                }
+                url = urlBase + urlIngredients;
+
+                // Send Http request
                 OkHttpHandler okHttpHandler= new OkHttpHandler();
                 okHttpHandler.execute(url);
             }
@@ -51,8 +74,8 @@ public class Recipes extends AppCompatActivity {
 
             Request.Builder builder = new Request.Builder();
             builder.url(params[0]);
-            builder.header("X-Mashape-Key", "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx")
-                    .header("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com");
+            builder.header("X-Mashape-Key", apiKey)
+                    .header("X-Mashape-Host", apiHost);
             Request request = builder.build();
             txtString.setText("attempt");
             try {
@@ -68,23 +91,28 @@ public class Recipes extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            //txtString.setText(s);
+            txtString.setText(s);
+            /*
             jsonReturn = s;
 
+            // Parse JSON return
             try{
                 String test = "";
 
                 JSONArray reader = new JSONArray(jsonReturn); //[{"name":"item 1"},{"name": "item2"}]
+
                 for (int i = 0; i < reader.length(); i++){
                     JSONObject c = reader.getJSONObject(i);
                     test = test + c.getString("title") + " " + c.getString("likes") + "\n";
                 }
                 txtString.setText(test);
+
                 //txtString.setText(jsonReturn);
             }
             catch(JSONException e){
                 txtString.setText("fail Json parse");
             }
+            */
         }
     }
 }
