@@ -21,6 +21,7 @@ public class RecipeOptions extends AppCompatActivity {
     private String[] cuisines;
     private TextView excludedView;
     private EditText excludedInput;
+    String excludedIngredients="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,10 @@ public class RecipeOptions extends AppCompatActivity {
             bundle.putString(Recipes.restriction,getString(R.string.pesc));
         }
 
+        if(!excludedIngredients.isEmpty()){
+            bundle.putString(Recipes.excludedIngredients,excludedIngredients.substring(0,excludedIngredients.length()-1));
+        }
+
         Intent intent=new Intent(this,Recipes.class);
         startActivity(intent,bundle);
 
@@ -71,7 +76,13 @@ public class RecipeOptions extends AppCompatActivity {
     }
 
     public void addPressed(View v){
-        //Continue here
+        if(excludedInput.getText()==null||excludedInput.getText().equals("")){
+            Toast.makeText(this,"Excluded ingredient is blank",Toast.LENGTH_LONG).show();
+            return;
+        }
+        excludedIngredients+=excludedInput.getText()+",";
+        excludedInput.setText("");
+        excludedView.setText(excludedIngredients);
 
     }
 }
