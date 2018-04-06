@@ -2,8 +2,10 @@ package com.example.capstone18.capstone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +58,11 @@ public class Pantry extends AppCompatActivity {
         setContentView(R.layout.activity_pantry);
         pantryList=(ListView)findViewById(R.id.pantry_list);
         ingredientList = new ArrayList<Ingredient>();
+
+        Toolbar toolbar=(Toolbar)findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab=getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         File file = new File(this.getFilesDir(), "pantry.txt");
 

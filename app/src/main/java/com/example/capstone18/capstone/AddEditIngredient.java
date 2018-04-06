@@ -1,8 +1,10 @@
 package com.example.capstone18.capstone;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -24,6 +26,12 @@ public class AddEditIngredient extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_ingredient);
+
+        Toolbar toolbar=(Toolbar)findViewById(R.id.add_edit_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab=getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
         ingredientName=(EditText)findViewById(R.id.ing_name);
         ingredientAmount=(EditText)findViewById(R.id.ing_amount);

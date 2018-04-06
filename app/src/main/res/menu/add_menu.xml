@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:appcompat="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_add"
-        android:icon="@drawable/ic_action_plus_white"
+        android:icon="@drawable/ic_action_plus_dark"
         android:title="@string/add"
         appcompat:showAsAction="always"/>
 </menu>
