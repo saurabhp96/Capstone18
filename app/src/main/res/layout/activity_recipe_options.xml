@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,12 +28,12 @@
         android:id="@+id/cuisine_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="36dp"
         android:text="Cuisine:"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/cuisine_grid"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <GridView
         android:id="@+id/cuisine_grid"
@@ -35,22 +41,30 @@
         android:layout_height="191dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="192dp"
         android:choiceMode="multipleChoice"
         android:numColumns="auto_fit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.409"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/cuisine_restriction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
-        android:layout_marginStart="28dp"
+        android:layout_width="321dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="240dp"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/vegan_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/vegan" />
 
         <RadioButton
             android:id="@+id/vegeterian_button"
@@ -68,12 +82,12 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/restriction_title"
+        android:id="@+id/diet_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="28dp"
-        android:text="Restrictions:"
+        android:text="Diet:"
         app:layout_constraintBottom_toTopOf="@+id/cuisine_restriction"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -103,7 +117,7 @@
         android:id="@+id/exclude_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="144dp"
         android:text="@string/exclude"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -112,7 +126,7 @@
         android:id="@+id/exc_input"
         android:layout_width="177dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="136dp"
         android:ems="10"
         android:hint="peanuts"
         android:inputType="textPersonName"
@@ -123,8 +137,8 @@
         android:id="@+id/add_button"
         android:layout_width="55dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="92dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="136dp"
+        android:layout_marginStart="12dp"
         android:onClick="addPressed"
         android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -139,4 +153,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exclude_title" />
 
+    <TextView
+        android:id="@+id/meal_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="68dp"
+        android:text="Meal:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/meal_group"
+        android:layout_width="361dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="108dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/breakfast_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/breakfast" />
+
+        <RadioButton
+            android:id="@+id/lunch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/lunch" />
+
+        <RadioButton
+            android:id="@+id/dinner_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dinner" />
+    </RadioGroup>
+
 </android.support.constraint.ConstraintLayout>
+</ScrollView>

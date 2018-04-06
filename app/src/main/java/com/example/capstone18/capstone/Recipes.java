@@ -16,9 +16,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 public class Recipes extends AppCompatActivity {
-    public static final String selectedCuisines="selected";
-    public static final String restriction="restriction";
-    public static final String excludedIngredients="excluded";
+    public static final String SELECTED_CUISINES="selected";
+    public static final String RESTRICTION="restriction";
+    public static final String EXCLUDED_INGREDIENTS ="excluded";
+    public static final String MEAL="meal";
     String jsonReturn;
     TextView txtString;
     public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx";

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -17,7 +15,7 @@ import android.widget.Toast;
 public class RecipeOptions extends AppCompatActivity {
 
     private GridView gridView;
-    private RadioGroup restrictionGroup;
+    private RadioGroup restrictionGroup,mealGroup;
     private String[] cuisines;
     private TextView excludedView;
     private EditText excludedInput;
@@ -37,8 +35,8 @@ public class RecipeOptions extends AppCompatActivity {
 
 
         restrictionGroup=(RadioGroup)findViewById(R.id.cuisine_restriction);
-        //https://developer.android.com/guide/topics/ui/controls/checkbox.html
-		//https://developer.android.com/reference/android/widget/GridView.html
+        mealGroup=(RadioGroup)findViewById(R.id.meal_group);
+
 
     }
 
@@ -51,19 +49,35 @@ public class RecipeOptions extends AppCompatActivity {
                 selectedCuisines+=view.getText()+",";
             }
         }
-        selectedCuisines=selectedCuisines.substring(0,selectedCuisines.length()-1);
-        bundle.putString(Recipes.selectedCuisines,selectedCuisines);
+        if(!selectedCuisines.isEmpty()) {
+            selectedCuisines = selectedCuisines.substring(0, selectedCuisines.length() - 1);
+            bundle.putString(Recipes.SELECTED_CUISINES, selectedCuisines);
+        }
 
         int id=restrictionGroup.getCheckedRadioButtonId();
         if(id==R.id.vegeterian_button){
-            bundle.putString(Recipes.restriction,getString(R.string.veg));
+            bundle.putString(Recipes.RESTRICTION,getString(R.string.veg));
         }
         else if(id==R.id.pesc_button){
-            bundle.putString(Recipes.restriction,getString(R.string.pesc));
+            bundle.putString(Recipes.RESTRICTION,getString(R.string.pesc));
         }
 
         if(!excludedIngredients.isEmpty()){
-            bundle.putString(Recipes.excludedIngredients,excludedIngredients.substring(0,excludedIngredients.length()-1));
+            bundle.putString(Recipes.EXCLUDED_INGREDIENTS,excludedIngredients.substring(0,excludedIngredients.length()-1));
+        }
+
+        id=mealGroup.getCheckedRadioButtonId();
+
+        switch(id){
+            case R.id.breakfast_button:
+                bundle.putString(Recipes.MEAL,getString(R.string.breakfast));
+                break;
+            case R.id.lunch_button:
+                bundle.putString(Recipes.MEAL,getString(R.string.lunch));
+                break;
+            case R.id.dinner_button:
+                bundle.putString(Recipes.MEAL,getString(R.string.dinner));
+                break;
         }
 
         Intent intent=new Intent(this,Recipes.class);

@@ -6,9 +6,13 @@
     <string name="gram">gram</string>
     <string name="kilogram">kg</string>
     <string name="physical_units">units</string>
-    <string name="pesc">Pesceterian</string>
-    <string name="veg">Vegeterian</string>
+    <string name="pesc">Pescetarian</string>
+    <string name="veg">Vegetarian</string>
+    <string name="vegan">Vegan</string>
     <string name="exclude">Exclude Ingredients:</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
     <string-array name="measurementUnits">
         <item>lb</item>
         <item>gram</item>
@@ -24,5 +28,6 @@
         <item>Eastern European</item>
         <item>Korean</item>
         <item>Mexican</item>
+        <item>Japanese</item>
     </string-array>
 </resources>
