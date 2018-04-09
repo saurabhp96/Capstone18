@@ -47,11 +47,10 @@ public class Recipes extends AppCompatActivity {
 
         // Recipe Button
         Button button = (Button) findViewById(R.id.button);
+        txtString = (TextView)findViewById(R.id.textString);
         // Code here executes on main thread after user presses button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                txtString = (TextView)findViewById(R.id.textString);
 
                 // Create URL string
                 String ingredients[] = {"apple, sugar, flour"};
