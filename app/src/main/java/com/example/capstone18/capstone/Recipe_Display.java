@@ -76,9 +76,10 @@ public class Recipe_Display extends AppCompatActivity {
     }
 
     public void okPressed(View v) {
-        finishActivity(RESULT_OK);
+        setResult(RESULT_OK);
+        finish();
 
     }
 
-    public void cancelPressed(View v){finishActivity(RESULT_CANCELED);}
+    public void cancelPressed(View v){setResult(RESULT_CANCELED); finish();}
 }
