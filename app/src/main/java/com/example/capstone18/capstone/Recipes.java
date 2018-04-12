@@ -39,12 +39,12 @@ public class Recipes extends AppCompatActivity {
     ListView recipe_view;
     Context recipe_context;
     Intent intent;
-    
+
     //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
     private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
     private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
-    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=2";
+    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=0";
     public String urlIngredients = "&includeIngredients=";
     public String url = "";
 
@@ -91,19 +91,21 @@ public class Recipes extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        txtString.setText(urlIngredients);
+
         /*
         if(urlIngredients.isEmpty()){
             Toast.makeText(this,"Pantry has no ingredients",Toast.LENGTH_SHORT).show();
         }
-
-        /*
-        Bundle bundle = getIntent().getExtras();
-        yourDataObject = bundle.getString(MEAL);
-        //txtString.setText(yourDataObject);
         */
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String meal = bundle.getString(MEAL);
+            if (meal != null)
+                urlIngredients = urlIngredients + "&cuisine=" + meal;
+        }
 
+        txtString.setText(urlIngredients);
         // Code here executes on main thread after user presses button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
