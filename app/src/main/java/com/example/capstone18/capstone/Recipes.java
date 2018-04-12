@@ -11,11 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +41,8 @@ public class Recipes extends AppCompatActivity {
     Intent intent;
 
     //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
-    public String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
-    public String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
+    private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
+    private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
     public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=2";
     public String urlIngredients = "";
@@ -61,6 +67,34 @@ public class Recipes extends AppCompatActivity {
         recipe_view = (ListView) findViewById(R.id.recipe_list);
         recipe_context = getApplicationContext();
         intent = new Intent(recipe_context, Recipe_Display.class);
+
+        FileInputStream stream=null;
+
+
+        try {
+            stream=openFileInput("Pantry.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+
+        try {
+            String line=reader.readLine();
+            while(line!=null){
+                String[] tokens=line.split(";");
+                urlIngredients=addIngredientToList(urlIngredients,new Ingredient(tokens[0],Double.parseDouble(tokens[1]),tokens[2]));
+                line=reader.readLine();
+            }
+            reader.close();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(urlIngredients.isEmpty()){
+            Toast.makeText(this,"Pantry has no ingredients",Toast.LENGTH_SHORT).show();
+        }
+
 
         /*
         FileOutputStream stream = openFileOutput("nameoffile.txt",Context.MODE_PRIVATE);
@@ -133,6 +167,10 @@ public class Recipes extends AppCompatActivity {
             }
         });
 
+    }
+
+    private String addIngredientToList(String list, Ingredient ingredient) {
+        return null;
     }
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {

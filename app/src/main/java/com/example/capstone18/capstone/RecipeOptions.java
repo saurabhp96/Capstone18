@@ -81,7 +81,8 @@ public class RecipeOptions extends AppCompatActivity {
         }
 
         Intent intent=new Intent(this,Recipes.class);
-        startActivity(intent,bundle);
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 
