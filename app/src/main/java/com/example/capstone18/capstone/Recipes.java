@@ -39,13 +39,13 @@ public class Recipes extends AppCompatActivity {
     ListView recipe_view;
     Context recipe_context;
     Intent intent;
-
+    
     //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
     private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
     private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
     public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=2";
-    public String urlIngredients = "";
+    public String urlIngredients = "&includeIngredients=";
     public String url = "";
 
     public String Jsonoutput;
@@ -70,9 +70,8 @@ public class Recipes extends AppCompatActivity {
 
         FileInputStream stream=null;
 
-
         try {
-            stream=openFileInput("Pantry.txt");
+            stream=openFileInput("pantry.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,22 +83,19 @@ public class Recipes extends AppCompatActivity {
                 String[] tokens=line.split(";");
                 urlIngredients=addIngredientToList(urlIngredients,new Ingredient(tokens[0],Double.parseDouble(tokens[1]),tokens[2]));
                 line=reader.readLine();
+                if (line!=null)
+                    urlIngredients = urlIngredients + "%2C+";
             }
             reader.close();
             stream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        txtString.setText(urlIngredients);
+        /*
         if(urlIngredients.isEmpty()){
             Toast.makeText(this,"Pantry has no ingredients",Toast.LENGTH_SHORT).show();
         }
-
-
-        /*
-        FileOutputStream stream = openFileOutput("nameoffile.txt",Context.MODE_PRIVATE);
-        PrintWriter w=new PrintWriter(stream); w.println("apple;2;lb"); w.println("sugar;2;cup");
-        */
 
         /*
         Bundle bundle = getIntent().getExtras();
@@ -111,17 +107,7 @@ public class Recipes extends AppCompatActivity {
         // Code here executes on main thread after user presses button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                // Create URL string
-                String ingredients[] = {"apple", "sugar", "flour"};
-                urlIngredients = "&includeIngredients=";
-                for (int i = 0; i < ingredients.length; i++) {
-                    urlIngredients = urlIngredients + ingredients[i];
-                    if (i < ingredients.length - 1)
-                        urlIngredients = urlIngredients + "%2C+";
-                }
                 url = urlBase + urlIngredients;
-
                 // Send Http request
                 OkHttpHandler okHttpHandler = new OkHttpHandler();
                 okHttpHandler.execute(url);
@@ -170,7 +156,8 @@ public class Recipes extends AppCompatActivity {
     }
 
     private String addIngredientToList(String list, Ingredient ingredient) {
-        return null;
+        list = list + ingredient.getName();
+        return list;
     }
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {
