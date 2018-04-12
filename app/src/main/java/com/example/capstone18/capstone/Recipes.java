@@ -34,7 +34,8 @@ public class Recipes extends AppCompatActivity {
     Context recipe_context;
     Intent intent;
 
-    public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx";
+    //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
+    public String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
     public String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
     public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=2";
@@ -65,7 +66,7 @@ public class Recipes extends AppCompatActivity {
         FileOutputStream stream = openFileOutput("nameoffile.txt",Context.MODE_PRIVATE);
         PrintWriter w=new PrintWriter(stream); w.println("apple;2;lb"); w.println("sugar;2;cup");
         */
-        
+
         /*
         Bundle bundle = getIntent().getExtras();
         yourDataObject = bundle.getString(MEAL);
@@ -90,10 +91,9 @@ public class Recipes extends AppCompatActivity {
                 // Send Http request
                 OkHttpHandler okHttpHandler = new OkHttpHandler();
                 okHttpHandler.execute(url);
-
             }
         });
-
+        // Select Recipe
         recipe_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -103,11 +103,8 @@ public class Recipes extends AppCompatActivity {
                 String images = "";
                 String instructions = "";
 
-
                 // Parse JSON return
                 try {
-
-
                     JSONObject jsonroot = new JSONObject(Jsonoutput);
                     JSONArray reader = jsonroot.getJSONArray("results");
                     JSONObject c = reader.getJSONObject(idnum);
@@ -121,7 +118,6 @@ public class Recipes extends AppCompatActivity {
                 } catch (JSONException e) {
                     txtString.setText("fail Json parse");
                 }
-
 
                 Intent intent = new Intent(Recipes.this, Recipe_Display.class);
                 Bundle bundle = new Bundle();
@@ -138,7 +134,6 @@ public class Recipes extends AppCompatActivity {
         });
 
     }
-
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {
         OkHttpClient client = new OkHttpClient();
@@ -169,7 +164,6 @@ public class Recipes extends AppCompatActivity {
             Jsonoutput = s;
             List<String> recipetest = new ArrayList<String>();
 
-
             // Parse JSON return
             try {
                 String test = "";
@@ -185,10 +179,5 @@ public class Recipes extends AppCompatActivity {
                 txtString.setText("fail Json parse");
             }
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
