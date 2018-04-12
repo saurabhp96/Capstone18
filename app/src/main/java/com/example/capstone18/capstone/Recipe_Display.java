@@ -44,9 +44,9 @@ public class Recipe_Display extends AppCompatActivity {
             finishActivity(RESULT_CANCELED);
         }
 
-        new ImageLoader(recipe_image).execute(bundle.getString(IMAGE_URL));
-        recipe_name.setText(bundle.getString(RECIPE_NAME));
-        recipe_instructions.setText(bundle.getString(INSTRUCTIONS));
+        new ImageLoader(recipe_image).execute(bundle.getString("IMAGE_URL"));
+        recipe_name.setText(bundle.getString("RECIPE_NAME"));
+        recipe_instructions.setText(bundle.getString("INSTRUCTIONS"));
     }
 
     private class ImageLoader extends AsyncTask<String,Void,Bitmap>{
