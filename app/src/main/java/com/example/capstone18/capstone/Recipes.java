@@ -1,17 +1,25 @@
 package com.example.capstone18.capstone;
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,16 +33,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
 public class Recipes extends AppCompatActivity {
     public static final String SELECTED_CUISINES = "selected";
     public static final String RESTRICTION = "restriction";
     public static final String EXCLUDED_INGREDIENTS = "excluded";
     public static final String MEAL = "meal";
 
+    final Context context=this;
     TextView txtString;
     ListView recipe_view;
     Context recipe_context;
@@ -120,6 +125,38 @@ public class Recipes extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                LayoutInflater li=LayoutInflater.from(context);
+                View previewView=li.inflate(R.layout.preview_display,null);
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                builder.setView(previewView);
+
+                ImageView recipeImage=(ImageView)previewView.findViewById(R.id.preview_image);
+                TextView recipeName=(TextView)previewView.findViewById(R.id.preview_name);
+                TextView recipeTime=(TextView)previewView.findViewById(R.id.preview_time);
+
+                try {
+                    JSONObject root=new JSONObject(Jsonoutput);
+                    //Continue here
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        okPressed();
+                    }
+                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                builder.create().show();
+
                 txtString.setText(Long.toString(id));
                 int idnum = (int) id;
                 String images = "";
@@ -157,10 +194,18 @@ public class Recipes extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is called when the user chooses a recipe after previewing it
+     */
+    private void okPressed() {
+
+    }
+
     private String addIngredientToList(String list, Ingredient ingredient) {
         list = list + ingredient.getName();
         return list;
     }
+
 
     public class OkHttpHandler extends AsyncTask<String, Void, String> {
         OkHttpClient client = new OkHttpClient();
