@@ -20,6 +20,7 @@ public class RecipeOptions extends AppCompatActivity {
     private TextView excludedView;
     private EditText excludedInput;
     String excludedIngredients="";
+    String viewText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class RecipeOptions extends AppCompatActivity {
         for(int i=0; i<cuisines.length; i++){
            CheckedTextView view= (CheckedTextView) gridView.getChildAt(i);
             if(view.isChecked()){
-                selectedCuisines+=view.getText()+",";
+                selectedCuisines+=view.getText()+"%2C+";
             }
         }
         if(!selectedCuisines.isEmpty()) {
@@ -63,7 +64,7 @@ public class RecipeOptions extends AppCompatActivity {
         }
 
         if(!excludedIngredients.isEmpty()){
-            bundle.putString(Recipes.EXCLUDED_INGREDIENTS,excludedIngredients.substring(0,excludedIngredients.length()-1));
+            bundle.putString(Recipes.EXCLUDED_INGREDIENTS,excludedIngredients.substring(0,excludedIngredients.length()-4));
         }
 
         id=mealGroup.getCheckedRadioButtonId();
@@ -95,9 +96,10 @@ public class RecipeOptions extends AppCompatActivity {
             Toast.makeText(this,"Excluded ingredient is blank",Toast.LENGTH_LONG).show();
             return;
         }
-        excludedIngredients+=excludedInput.getText()+",";
+        excludedIngredients+=excludedInput.getText()+"%2C+";
+        viewText += excludedInput.getText()+",";
         excludedInput.setText("");
-        excludedView.setText(excludedIngredients);
+        excludedView.setText(viewText);
 
     }
 }

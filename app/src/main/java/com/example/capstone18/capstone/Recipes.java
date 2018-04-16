@@ -40,9 +40,9 @@ public class Recipes extends AppCompatActivity {
     Context recipe_context;
     Intent intent;
 
-    //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
-    private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
-    private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
+    public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
+    //private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
+    public String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
     public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=0";
     public String urlIngredients = "&includeIngredients=";
@@ -50,7 +50,7 @@ public class Recipes extends AppCompatActivity {
 
     public String Jsonoutput;
 
-    // new base call
+    // new reference call
     //"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=true
     // &intolerances=peanut%2C+shellfish&type=main+course&maxFat=100&maxCalories=1500&minProtein=5
     // &maxProtein=100&cuisine=american&excludeIngredients=coconut%2C+mango&instructionsRequired=true&minFat=5
@@ -68,15 +68,14 @@ public class Recipes extends AppCompatActivity {
         recipe_context = getApplicationContext();
         intent = new Intent(recipe_context, Recipe_Display.class);
 
+        // Get Recipe Ingredients
         FileInputStream stream=null;
-
         try {
             stream=openFileInput("pantry.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
-
         try {
             String line=reader.readLine();
             while(line!=null){
@@ -91,21 +90,28 @@ public class Recipes extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*
-        if(urlIngredients.isEmpty()){
-            Toast.makeText(this,"Pantry has no ingredients",Toast.LENGTH_SHORT).show();
+        if(urlIngredients.equals("&includeIngredients=") || urlIngredients.equals("")){
+            txtString.setText("No Ingredients");
         }
-        */
 
+        // Set recipe options
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String meal = bundle.getString(MEAL);
             if (meal != null)
-                urlIngredients = urlIngredients + "&cuisine=" + meal;
+                urlIngredients = urlIngredients + "&type=" + meal;
+            String cuisine = bundle.getString(SELECTED_CUISINES);
+            if (cuisine != null)
+                urlIngredients = urlIngredients + "&cuisine=" + cuisine;
+            String diet = bundle.getString(RESTRICTION);
+            if (diet != null)
+                urlIngredients = urlIngredients + "&diet=" + diet;
+            String excludedIngredients = bundle.getString(EXCLUDED_INGREDIENTS);
+            if (excludedIngredients != null)
+                urlIngredients = urlIngredients + "&excludeIngredients=" + excludedIngredients;
         }
-
         txtString.setText(urlIngredients);
+
         // Code here executes on main thread after user presses button
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -115,6 +121,7 @@ public class Recipes extends AppCompatActivity {
                 okHttpHandler.execute(url);
             }
         });
+
         // Select Recipe
         recipe_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -147,7 +154,6 @@ public class Recipes extends AppCompatActivity {
                 bundle.putString("RECIPE_NAME", parent.getItemAtPosition(position).toString());
                 bundle.putString("INSTRUCTIONS", instructions);
 
-                //txtString.setText(bundle.getString("INSTRUCTIONS"));
                 if (intent == null)
                     txtString.setText("fail intent");
                 intent.putExtras(bundle);
