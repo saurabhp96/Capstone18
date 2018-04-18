@@ -5,6 +5,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +131,7 @@ public class Recipes extends AppCompatActivity {
                 //http://www.mkyong.com/android/android-prompt-user-input-dialog-example/
                 LayoutInflater li=LayoutInflater.from(context);
                 View previewView=li.inflate(R.layout.preview_display,null);
+                final int pos=position;
 
                 AlertDialog.Builder builder=new AlertDialog.Builder(context);
                 builder.setView(previewView);
@@ -138,7 +142,13 @@ public class Recipes extends AppCompatActivity {
 
                 try {
                     JSONObject root=new JSONObject(Jsonoutput);
-                    //Continue here
+                    JSONArray reader = root.getJSONArray("results");
+                    JSONObject c = reader.getJSONObject(position);
+                    String imageURL=c.getString("image");
+                    new ImageLoader(recipeImage).execute(imageURL);
+                    recipeName.setText(c.getString("title"));
+                    recipeTime.setText(c.getString("readyInMinutes")+" minutes");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -146,7 +156,7 @@ public class Recipes extends AppCompatActivity {
                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        okPressed();
+                        okPressed(pos);
                     }
                 }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     @Override
@@ -157,38 +167,6 @@ public class Recipes extends AppCompatActivity {
 
                 builder.create().show();
 
-                txtString.setText(Long.toString(id));
-                int idnum = (int) id;
-                String images = "";
-                String instructions = "";
-
-                // Parse JSON return
-                try {
-                    JSONObject jsonroot = new JSONObject(Jsonoutput);
-                    JSONArray reader = jsonroot.getJSONArray("results");
-                    JSONObject c = reader.getJSONObject(idnum);
-                    images = c.getString("image");
-
-                    JSONArray instructionlist = c.getJSONArray("analyzedInstructions").getJSONObject(0).getJSONArray("steps");
-                    for (int j = 0; j < instructionlist.length(); j++) {
-                        int tmp = j + 1;
-                        instructions = instructions + "Step " + tmp + ": " + instructionlist.getJSONObject(j).getString("step") + " \n \n";
-                    }
-                } catch (JSONException e) {
-                    txtString.setText("fail Json parse");
-                }
-
-                Intent intent = new Intent(Recipes.this, Recipe_Display.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("IMAGE_URL", images);
-                bundle.putString("RECIPE_NAME", parent.getItemAtPosition(position).toString());
-                bundle.putString("INSTRUCTIONS", instructions);
-
-                //txtString.setText(bundle.getString("INSTRUCTIONS"));
-                if (intent == null)
-                    txtString.setText("fail intent");
-                intent.putExtras(bundle);
-                startActivity(intent);
             }
         });
 
@@ -197,7 +175,41 @@ public class Recipes extends AppCompatActivity {
     /**
      * This method is called when the user chooses a recipe after previewing it
      */
-    private void okPressed() {
+    private void okPressed(int position) {
+        txtString.setText(Long.toString(position));
+        int idnum = position;
+        String images = "";
+        String instructions = "";
+        String title="";
+
+        // Parse JSON return
+        try {
+            JSONObject jsonroot = new JSONObject(Jsonoutput);
+            JSONArray reader = jsonroot.getJSONArray("results");
+            JSONObject c = reader.getJSONObject(idnum);
+            images = c.getString("image");
+            title=c.getString("title");
+
+            JSONArray instructionlist = c.getJSONArray("analyzedInstructions").getJSONObject(0).getJSONArray("steps");
+            for (int j = 0; j < instructionlist.length(); j++) {
+                int tmp = j + 1;
+                instructions = instructions + "Step " + tmp + ": " + instructionlist.getJSONObject(j).getString("step") + " \n \n";
+            }
+        } catch (JSONException e) {
+            txtString.setText("fail Json parse");
+        }
+
+        Intent intent = new Intent(Recipes.this, Recipe_Display.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("IMAGE_URL", images);
+        bundle.putString("RECIPE_NAME",title);
+        bundle.putString("INSTRUCTIONS", instructions);
+
+        //txtString.setText(bundle.getString("INSTRUCTIONS"));
+        if (intent == null)
+            txtString.setText("fail intent");
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 
@@ -218,7 +230,7 @@ public class Recipes extends AppCompatActivity {
             builder.header("X-Mashape-Key", apiKey)
                     .header("X-Mashape-Host", apiHost);
             Request request = builder.build();
-            txtString.setText("attempt");
+            //txtString.setText("attempt");
             try {
                 Response response = client.newCall(request).execute();
                 return response.body().string();
@@ -250,6 +262,32 @@ public class Recipes extends AppCompatActivity {
             } catch (JSONException e) {
                 txtString.setText("fail Json parse");
             }
+        }
+    }
+
+    private class ImageLoader extends AsyncTask<String,Void,Bitmap>{
+        ImageView imageView;
+
+        public ImageLoader(ImageView i){
+            imageView=i;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            String url=urls[0];
+            Bitmap image=null;
+            try {
+                InputStream stream=new java.net.URL(url).openStream();
+                image= BitmapFactory.decodeStream(stream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return image;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
         }
     }
 }
