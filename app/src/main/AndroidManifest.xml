@@ -29,7 +29,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeOptions"/>
         </activity>
-        <activity android:name=".AddEditIngredient" />
+        <activity android:name=".AddEditIngredient" android:parentActivityName=".Pantry" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Pantry"/>
+        </activity>
         <activity android:name=".ShoppingList" android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
