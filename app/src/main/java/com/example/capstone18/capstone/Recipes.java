@@ -176,6 +176,7 @@ public class Recipes extends AppCompatActivity {
      * This method is called when the user chooses a recipe after previewing it
      */
     private void okPressed(int position) {
+        //TODO: need to deduct from pantry
         txtString.setText(Long.toString(position));
         int idnum = position;
         String images = "";
