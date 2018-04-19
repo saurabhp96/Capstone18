@@ -209,9 +209,10 @@ public class Pantry extends AppCompatActivity {
         }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                for(int index=selectedI.size()-1; index>=0; i--){
-                    int selected=selectedI.get(index);
-                    ingredientList.remove(selected);
+                for(int currI=ingredientList.size()-1; currI>=0; currI--){
+                    if(selectedI.contains(currI)){
+                        ingredientList.remove(currI);
+                    }
                 }
                 pantryList.setAdapter(new ArrayAdapter<Ingredient>(getApplicationContext(),R.layout.pantry_item,ingredientList));
 
