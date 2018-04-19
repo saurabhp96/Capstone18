@@ -1,6 +1,8 @@
 package com.example.capstone18.capstone;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Pantry extends AppCompatActivity {
 
@@ -169,12 +172,61 @@ public class Pantry extends AppCompatActivity {
             case R.id.action_add:
                 addIngredient();
                 return true;
+            case R.id.action_delete:
+                deleteIngredient();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
+    /**
+     * This method is called when user clicks the trash icon in the menu
+     */
+    private void deleteIngredient() {
+        String[] ingNames=new String[ingredientList.size()];
+        int index=0;
+        for(Ingredient ing:ingredientList){
+            ingNames[index++]=ing.getName();
+        }
+
+        final List<Integer> selectedI=new ArrayList<Integer>();
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Delete Pantry Items").setMultiChoiceItems(ingNames, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean isChecked) {
+                if(isChecked){
+                    selectedI.add(i);
+                }
+                else if(selectedI.contains(i)){
+                    selectedI.remove(Integer.valueOf(i));
+                }
+
+
+            }
+        }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                for(int index=selectedI.size()-1; index>=0; i--){
+                    int selected=selectedI.get(index);
+                    ingredientList.remove(selected);
+                }
+                pantryList.setAdapter(new ArrayAdapter<Ingredient>(getApplicationContext(),R.layout.pantry_item,ingredientList));
+
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).create().show();
+    }
+
+    /**
+     * This method is called when user clicks the add button in the menu
+     */
     private void addIngredient() {
         Intent intent=new Intent(this,AddEditIngredient.class);
         startActivityForResult(intent,ADD_INTENT);
