@@ -8,6 +8,15 @@
     tools:context="com.example.capstone18.capstone.Recipes"
     tools:layout_editor_absoluteY="25dp">
 
+    <android.support.v7.widget.Toolbar
+    android:id="@+id/my_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
 
     <Button
         android:id="@+id/button"
@@ -16,28 +25,27 @@
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/textString"
         app:layout_constraintStart_toStartOf="@+id/textString"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 
     <TextView
         android:id="@+id/textString"
         android:layout_width="0dp"
-        android:layout_height="96dp"
-        android:layout_marginBottom="13dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="423dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/recipe_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <ListView
         android:id="@+id/recipe_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textString" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 </android.support.constraint.ConstraintLayout>

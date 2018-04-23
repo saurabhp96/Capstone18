@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -55,7 +57,6 @@ public class Recipes extends AppCompatActivity {
     public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=0";
     public String urlIngredients = "&includeIngredients=";
     public String url = "";
-
     public String Jsonoutput;
 
     // new base call
@@ -70,12 +71,22 @@ public class Recipes extends AppCompatActivity {
         setContentView(R.layout.activity_recipes);
 
         // get view components
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
         txtString = (TextView) findViewById(R.id.textString);
         recipe_view = (ListView) findViewById(R.id.recipe_list);
         recipe_context = getApplicationContext();
         intent = new Intent(recipe_context, Recipe_Display.class);
 
+        // Toolbar
+        Toolbar toolbar=(Toolbar)findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab=getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        // Hiding elements
+        recipe_view.setVisibility(View.GONE);
+
+        // Get Recipe Ingredients
         FileInputStream stream=null;
 
         try {
@@ -99,24 +110,34 @@ public class Recipes extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*
-        if(urlIngredients.isEmpty()){
-            Toast.makeText(this,"Pantry has no ingredients",Toast.LENGTH_SHORT).show();
+        if(urlIngredients.equals("&includeIngredients=") || urlIngredients.equals("")){
+            txtString.setText("No Ingredients");
         }
-        */
 
+        // Set recipe options
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String meal = bundle.getString(MEAL);
             if (meal != null)
-                urlIngredients = urlIngredients + "&cuisine=" + meal;
+                urlIngredients = urlIngredients + "&type=" + meal;
+            String cuisine = bundle.getString(SELECTED_CUISINES);
+            if (cuisine != null)
+                urlIngredients = urlIngredients + "&cuisine=" + cuisine;
+            String diet = bundle.getString(RESTRICTION);
+            if (diet != null)
+                urlIngredients = urlIngredients + "&diet=" + diet;
+            String excludedIngredients = bundle.getString(EXCLUDED_INGREDIENTS);
+            if (excludedIngredients != null)
+                urlIngredients = urlIngredients + "&excludeIngredients=" + excludedIngredients;
         }
-
         txtString.setText(urlIngredients);
-        // Code here executes on main thread after user presses button
+
+        // Button press
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                button.setVisibility(View.GONE);
+                txtString.setVisibility(View.GONE);
+                recipe_view.setVisibility(View.VISIBLE);
                 url = urlBase + urlIngredients;
                 // Send Http request
                 OkHttpHandler okHttpHandler = new OkHttpHandler();
