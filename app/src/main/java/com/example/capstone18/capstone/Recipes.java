@@ -32,9 +32,11 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class Recipes extends AppCompatActivity {
     ListView recipe_view;
     Context recipe_context;
     Intent intent;
+    private List<Ingredient> pantryIngredients;
 
     //public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
     private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
@@ -76,6 +79,7 @@ public class Recipes extends AppCompatActivity {
         recipe_view = (ListView) findViewById(R.id.recipe_list);
         recipe_context = getApplicationContext();
         intent = new Intent(recipe_context, Recipe_Display.class);
+        pantryIngredients=new ArrayList<Ingredient>();
 
         // Toolbar
         Toolbar toolbar=(Toolbar)findViewById(R.id.my_toolbar);
@@ -99,9 +103,12 @@ public class Recipes extends AppCompatActivity {
 
         try {
             String line=reader.readLine();
+            Ingredient newIngredient;
             while(line!=null){
                 String[] tokens=line.split(";");
-                urlIngredients=addIngredientToList(urlIngredients,new Ingredient(tokens[0],Double.parseDouble(tokens[1]),tokens[2]));
+                newIngredient=new Ingredient(tokens[0],Double.parseDouble(tokens[1]),tokens[2]);
+                pantryIngredients.add(newIngredient);
+                urlIngredients=addIngredientToList(urlIngredients,newIngredient);
                 line=reader.readLine();
                 if (line!=null)
                     urlIngredients = urlIngredients + "%2C+";
@@ -139,20 +146,6 @@ public class Recipes extends AppCompatActivity {
         String temptext = "Finding Recipes";
         txtString.setText(temptext);
 
-        /*
-        // Button press
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                button.setVisibility(View.GONE);
-                txtString.setVisibility(View.GONE);
-                recipe_view.setVisibility(View.VISIBLE);
-                url = urlBase + urlIngredients;
-                // Send Http request
-                OkHttpHandler okHttpHandler = new OkHttpHandler();
-                okHttpHandler.execute(url);
-            }
-        });
-        */
 
         // Select Recipe
         recipe_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -227,6 +220,25 @@ public class Recipes extends AppCompatActivity {
                 int tmp = j + 1;
                 instructions = instructions + "Step " + tmp + ": " + instructionlist.getJSONObject(j).getString("step") + " \n \n";
             }
+
+            JSONArray usedIngredients=c.getJSONArray("usedIngredients");
+            for(int index=0; index<usedIngredients.length(); index++){
+                JSONObject ingredientJSON=usedIngredients.getJSONObject(index);
+                Ingredient ing=new Ingredient(ingredientJSON.getString("name"),ingredientJSON.getDouble("amount"),ingredientJSON.getString("unit"));
+                if (pantryIngredients.contains(ing)) {
+                    int pantryI = pantryIngredients.indexOf(ing);
+                    double newAmount = pantryIngredients.get(pantryI).getQuantity() -
+                            ingredientJSON.getDouble("amount") *
+                                    findConversionFactor(ingredientJSON.getString("unit"), pantryIngredients.get(pantryI).getMeasurementUnit());
+                    pantryIngredients.get(pantryI).setQuantity(newAmount);
+                    if (pantryIngredients.get(pantryI).getQuantity() <= 0) {
+                        pantryIngredients.remove(pantryI);
+                    }
+                }
+            }
+
+            updatePantry(pantryIngredients);
+
         } catch (JSONException e) {
             txtString.setText("fail Json parse");
         }
@@ -242,6 +254,27 @@ public class Recipes extends AppCompatActivity {
             txtString.setText("fail intent");
         intent.putExtras(bundle);
         startActivity(intent);
+
+    }
+
+    /**
+     * Writes the list of ingredients into pantry.txt
+     * @param pantryIngredients The list of ingredients to store
+     */
+    private void updatePantry(List<Ingredient> pantryIngredients) {
+
+        try {
+            FileOutputStream outputStream=openFileOutput("pantry.txt", Context.MODE_PRIVATE);
+            PrintWriter writer=new PrintWriter(outputStream);
+            for(Ingredient i:pantryIngredients){
+                writer.println(i.getName()+";"+i.getQuantity()+";"+i.getMeasurementUnit());
+            }
+            writer.close();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -324,5 +357,49 @@ public class Recipes extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             imageView.setImageBitmap(bitmap);
         }
+    }
+
+    /**
+     * Function to find the conversion factor from one unit of measurement to another unit of measurement
+     * @param from the unit of measurement to convert from
+     * @param to the unit of measurement to convert to
+     * @return conversion factor
+     */
+    private double findConversionFactor(String from, String to) {
+        String lb=getString(R.string.lb);
+        String kg=getString(R.string.kilogram);
+        String gram=getString(R.string.gram);
+
+        if(from.equals(to)){
+            return 1.0;
+        }
+
+        if(from.equals(lb)){
+            if(to.equals(kg)){
+                return 0.45359237;
+            }
+            else if(to.equals(gram)){
+                return 0.45359237/1000;
+            }
+
+        }
+        else if(from.equals(kg)){
+            if(to.equals(gram)){
+                return 1000.0;
+            }
+            else if(to.equals(lb)){
+                return 2.20462262185;
+            }
+        }
+        else if(from.equals(gram)){
+            if(to.equals(kg)){
+                return 1.0/1000;
+            }
+            else if(to.equals(lb)){
+                return 2.20462262185/1000;
+            }
+
+        }
+        return .8; //unit not found at this point
     }
 }
