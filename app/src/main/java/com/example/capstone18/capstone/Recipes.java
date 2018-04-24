@@ -54,7 +54,7 @@ public class Recipes extends AppCompatActivity {
     private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
     private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
-    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=5&instructionsRequired=true&addRecipeInformation=true&ranking=0";
+    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=15&instructionsRequired=true&addRecipeInformation=true&ranking=0";
     public String urlIngredients = "&includeIngredients=";
     public String url = "";
     public String Jsonoutput;
@@ -71,7 +71,7 @@ public class Recipes extends AppCompatActivity {
         setContentView(R.layout.activity_recipes);
 
         // get view components
-        final Button button = (Button) findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.button);
         txtString = (TextView) findViewById(R.id.textString);
         recipe_view = (ListView) findViewById(R.id.recipe_list);
         recipe_context = getApplicationContext();
@@ -85,6 +85,7 @@ public class Recipes extends AppCompatActivity {
 
         // Hiding elements
         recipe_view.setVisibility(View.GONE);
+        button.setVisibility(View.GONE);
 
         // Get Recipe Ingredients
         FileInputStream stream=null;
@@ -130,8 +131,15 @@ public class Recipes extends AppCompatActivity {
             if (excludedIngredients != null)
                 urlIngredients = urlIngredients + "&excludeIngredients=" + excludedIngredients;
         }
-        txtString.setText(urlIngredients);
+        url = urlBase + urlIngredients;
+        // Send Http request
+        OkHttpHandler okHttpHandler = new OkHttpHandler();
+        okHttpHandler.execute(url);
 
+        String temptext = "Finding Recipes";
+        txtString.setText(temptext);
+
+        /*
         // Button press
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -144,6 +152,8 @@ public class Recipes extends AppCompatActivity {
                 okHttpHandler.execute(url);
             }
         });
+        */
+
         // Select Recipe
         recipe_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -284,6 +294,9 @@ public class Recipes extends AppCompatActivity {
             } catch (JSONException e) {
                 txtString.setText("fail Json parse");
             }
+
+            txtString.setVisibility(View.GONE);
+            recipe_view.setVisibility(View.VISIBLE);
         }
     }
 
