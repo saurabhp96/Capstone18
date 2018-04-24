@@ -2,8 +2,10 @@ package com.example.capstone18.capstone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +58,12 @@ public class ShoppingList extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list);
         shoppingList =(ListView)findViewById(R.id.shopping_list);
         ingredientList = new ArrayList<Ingredient>();
+
+        Toolbar toolbar=(Toolbar)findViewById(R.id.shopping_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         File file = new File(this.getFilesDir(), "shoppingList.txt");
 
