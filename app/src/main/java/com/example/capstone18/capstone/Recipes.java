@@ -54,7 +54,7 @@ public class Recipes extends AppCompatActivity {
     private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
     private String apiHost = "spoonacular-recipe-food-nutrition-v1.p.mashape.com";
 
-    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&offset=0&number=15&instructionsRequired=true&addRecipeInformation=true&ranking=0";
+    public String urlBase = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex?limitLicense=false&fillIngredients=true&offset=0&number=15&instructionsRequired=true&addRecipeInformation=true&ranking=0";
     public String urlIngredients = "&includeIngredients=";
     public String url = "";
     public String Jsonoutput;

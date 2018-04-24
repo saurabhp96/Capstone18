@@ -12,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 public class RecipeOptions extends AppCompatActivity {
 
     private GridView gridView;
@@ -31,6 +33,7 @@ public class RecipeOptions extends AppCompatActivity {
         excludedInput=(EditText)findViewById(R.id.exc_input);
         excludedView=(TextView)findViewById(R.id.excluded_ing_list);
         cuisines=getResources().getStringArray(R.array.cuisines);
+        Arrays.sort(cuisines);
         ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_list_item_multiple_choice,cuisines);
         gridView.setAdapter(adapter);
 
