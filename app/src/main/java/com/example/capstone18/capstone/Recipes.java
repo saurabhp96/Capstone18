@@ -213,6 +213,7 @@ public class Recipes extends AppCompatActivity {
         String images = "";
         String instructions = "";
         String title="";
+        String recipeId = "";
 
         // Parse JSON return
         try {
@@ -220,7 +221,8 @@ public class Recipes extends AppCompatActivity {
             JSONArray reader = jsonroot.getJSONArray("results");
             JSONObject c = reader.getJSONObject(idnum);
             images = c.getString("image");
-            title=c.getString("title");
+            title = c.getString("title");
+            recipeId = c.getString("id");
 
             JSONArray instructionlist = c.getJSONArray("analyzedInstructions").getJSONObject(0).getJSONArray("steps");
             for (int j = 0; j < instructionlist.length(); j++) {
@@ -236,6 +238,7 @@ public class Recipes extends AppCompatActivity {
         bundle.putString("IMAGE_URL", images);
         bundle.putString("RECIPE_NAME",title);
         bundle.putString("INSTRUCTIONS", instructions);
+        bundle.putString("RECIPE_ID", recipeId);
 
         //txtString.setText(bundle.getString("INSTRUCTIONS"));
         if (intent == null)

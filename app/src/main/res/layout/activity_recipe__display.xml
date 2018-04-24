@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -19,6 +20,15 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
+        <ImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/alert_dark_frame" />
+
         <TextView
             android:id="@+id/recipe_name"
             android:layout_width="wrap_content"
@@ -31,14 +41,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipeImage" />
 
-        <ImageView
-            android:id="@+id/recipeImage"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/recipe_ingredients"
             android:layout_width="match_parent"
-            android:layout_height="105dp"
-            android:layout_marginTop="64dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/alert_dark_frame" />
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name"
+            tools:context=".MainActivity" >
+
+            <GridView
+                android:numColumns="auto_fit"
+                android:gravity="center"
+                android:columnWidth="120dp"
+                android:stretchMode="columnWidth"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/grid"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/recipe_instructions"
@@ -50,7 +72,7 @@
             android:layout_marginRight="6dp"
             android:scrollbars="vertical"
             android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/recipe_name"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_ingredients"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
