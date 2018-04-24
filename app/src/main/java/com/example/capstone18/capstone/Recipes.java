@@ -287,7 +287,7 @@ public class Recipes extends AppCompatActivity {
                 JSONArray reader = jsonroot.getJSONArray("results");
                 for (int i = 0; i < reader.length(); i++) {
                     JSONObject c = reader.getJSONObject(i);
-                    recipetest.add(c.getString("title") + "     Likes: " + c.getString("likes"));
+                    recipetest.add(c.getString("title"));// + "     Likes: " + c.getString("likes"));
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(recipe_context, android.R.layout.simple_list_item_1, recipetest);
                 recipe_view.setAdapter(adapter);
