@@ -135,8 +135,6 @@ public class Recipe_Display extends AppCompatActivity {
             super.onPostExecute(s);
             Jsonoutput = s;
             List<String> recipeDisplay = new ArrayList<String>();
-            List<String> recipeIngredients = new ArrayList<String>();
-            List<String> recipeAmount = new ArrayList<String>();
             List<String> recipeImage = new ArrayList<String>();
 
 
@@ -149,22 +147,17 @@ public class Recipe_Display extends AppCompatActivity {
                     JSONObject c = reader.getJSONObject(i);
 
                     String Amount;
-                    Amount = String.valueOf(((double)((int)(c.getDouble("amount") * 1000)) / 1000));
-                    recipeAmount.add(Amount + " " + c.getString("unit"));
-
+                    Amount = String.valueOf(((double) ((int) (c.getDouble("amount") * 1000)) / 1000));
                     recipeDisplay.add(c.getString("name") + "\n" + Amount + " " + c.getString("unit"));
-                    recipeIngredients.add(c.getString("name"));
                     recipeImage.add(c.getString("image"));
 
                 }
                 CustomGrid adapter = new CustomGrid(recipe_context, recipeDisplay, recipeImage);
                 grid.setAdapter(adapter);
             } catch (JSONException e) {
-                //txtString.setText("fail Json parse");
+                e.printStackTrace();
             }
 
-            //txtString.setVisibility(View.GONE);
-            //recipe_view.setVisibility(View.VISIBLE);
         }
     }
 
