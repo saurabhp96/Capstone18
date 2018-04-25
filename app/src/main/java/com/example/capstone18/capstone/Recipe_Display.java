@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe_Display extends AppCompatActivity {
-    public static final String IMAGE_URL="url";
-    public static final String RECIPE_NAME="name";
-    public static final String INSTRUCTIONS="instructions";
-    public static final String RECIPE_ID="recipeId";
+    public static final String IMAGE_URL = "url";
+    public static final String RECIPE_NAME = "name";
+    public static final String INSTRUCTIONS = "instructions";
+    public static final String RECIPE_ID = "recipeId";
 
     public String apiKey = "q0hVswUOhPmshMS5UZnQXk135TMap1SZItBjsnH12TyNDbPxzx"; //P
     //private String apiKey = "K3hkrfTbpzmshEjPqJ39L31yWXRvp1d3ZvujsnWgbJAHZITIep"; // S
@@ -44,7 +44,7 @@ public class Recipe_Display extends AppCompatActivity {
     public String Jsonoutput;
     //"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/479101/information"
 
-    private TextView recipe_name,recipe_instructions;
+    private TextView recipe_name, recipe_instructions;
     private ImageView recipe_image;
     private GridView grid;
     Context recipe_context;
@@ -64,7 +64,7 @@ public class Recipe_Display extends AppCompatActivity {
         recipe_name = (TextView) findViewById(R.id.recipe_name);
         recipe_instructions = (TextView) findViewById(R.id.recipe_instructions);
         recipe_context = getApplicationContext();
-        grid=(GridView)findViewById(R.id.grid);
+        grid = (GridView) findViewById(R.id.grid);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
@@ -81,20 +81,20 @@ public class Recipe_Display extends AppCompatActivity {
         okHttpHandler.execute(url);
     }
 
-    private class ImageLoader extends AsyncTask<String,Void,Bitmap>{
+    private class ImageLoader extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView;
 
-        public ImageLoader(ImageView i){
-            imageView=i;
+        public ImageLoader(ImageView i) {
+            imageView = i;
         }
 
         @Override
         protected Bitmap doInBackground(String... urls) {
-            String url=urls[0];
-            Bitmap image=null;
+            String url = urls[0];
+            Bitmap image = null;
             try {
-                InputStream stream=new java.net.URL(url).openStream();
-                image= BitmapFactory.decodeStream(stream);
+                InputStream stream = new java.net.URL(url).openStream();
+                image = BitmapFactory.decodeStream(stream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -147,10 +147,15 @@ public class Recipe_Display extends AppCompatActivity {
                 JSONArray reader = jsonroot.getJSONArray("extendedIngredients");
                 for (int i = 0; i < reader.length(); i++) {
                     JSONObject c = reader.getJSONObject(i);
-                    recipeDisplay.add(c.getString("name") + "\n" + c.getString("amount") + " " + c.getString("unit"));
+
+                    String Amount;
+                    Amount = String.valueOf(((double)((int)(c.getDouble("amount") * 1000)) / 1000));
+                    recipeAmount.add(Amount + " " + c.getString("unit"));
+
+                    recipeDisplay.add(c.getString("name") + "\n" + Amount + " " + c.getString("unit"));
                     recipeIngredients.add(c.getString("name"));
-                    recipeAmount.add(c.getString("amount") + " " + c.getString("unit"));
                     recipeImage.add(c.getString("image"));
+
                 }
                 CustomGrid adapter = new CustomGrid(recipe_context, recipeDisplay, recipeImage);
                 grid.setAdapter(adapter);
@@ -169,5 +174,8 @@ public class Recipe_Display extends AppCompatActivity {
 
     }
 
-    public void cancelPressed(View v){setResult(RESULT_CANCELED); finish();}
+    public void cancelPressed(View v) {
+        setResult(RESULT_CANCELED);
+        finish();
+    }
 }
