@@ -1,10 +1,12 @@
 package com.example.capstone18.capstone;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,9 +63,8 @@ public class ShoppingList extends AppCompatActivity {
 
         Toolbar toolbar=(Toolbar)findViewById(R.id.shopping_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+        ActionBar ab=getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         File file = new File(this.getFilesDir(), "shoppingList.txt");
 
@@ -120,7 +121,7 @@ public class ShoppingList extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
+
         if(resultCode!=RESULT_OK)
             return;
 
@@ -170,12 +171,62 @@ public class ShoppingList extends AppCompatActivity {
             case R.id.action_add:
                 addIngredient();
                 return true;
+            case R.id.action_delete:
+                deleteIngredient();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
 
+    /**
+     * This method is called when user clicks the trash icon in the menu
+     */
+    private void deleteIngredient() {
+        String[] ingNames=new String[ingredientList.size()];
+        int index=0;
+        for(Ingredient ing:ingredientList){
+            ingNames[index++]=ing.getName();
+        }
+
+        final List<Integer> selectedI=new ArrayList<Integer>();
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Delete Shopping List Items").setMultiChoiceItems(ingNames, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean isChecked) {
+                if(isChecked){
+                    selectedI.add(i);
+                }
+                else if(selectedI.contains(i)){
+                    selectedI.remove(Integer.valueOf(i));
+                }
+
+
+            }
+        }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                for(int currI=ingredientList.size()-1; currI>=0; currI--){
+                    if(selectedI.contains(currI)){
+                        ingredientList.remove(currI);
+                    }
+                }
+                shoppingList.setAdapter(new ArrayAdapter<Ingredient>(getApplicationContext(),R.layout.shopping_list_item,ingredientList));
+
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).create().show();
+    }
+
+    /**
+     * This method is called when user clicks the add button in the menu
+     */
     private void addIngredient() {
         Intent intent=new Intent(this,AddEditIngredient.class);
         startActivityForResult(intent,ADD_INTENT);
