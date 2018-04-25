@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -105,6 +106,78 @@ public class ShoppingList extends AppCompatActivity {
                 editIngredient(i);
             }
         });
+
+
+        //when you click "add all to pantry" it should add all ingredients to pantry
+        //and clear shopping list
+        final File pantryFile = new File(this.getFilesDir(), "pantry.txt");
+        Button addAllToPantryButton=findViewById(R.id.addAllToPantryButton);
+        addAllToPantryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //take all existing pantry items and put them in a List (existingPantryItemList)
+                List<Ingredient> existingPantryItemList = new ArrayList<Ingredient>();
+                if(pantryFile.exists()) {
+                    try {
+                        FileInputStream inputStream = openFileInput("pantry.txt");
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                        String line = null;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            String[] tokens = line.split(";");
+                            existingPantryItemList.add(new Ingredient(tokens[0], Double.parseDouble(tokens[1]), tokens[2]));
+                        }
+                        bufferedReader.close();
+                        inputStream.close();
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    try {
+                        pantryFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //take all shopping list items (ingredientList), then pantry list items, and write them into the file
+                try {
+                    FileOutputStream outputStream=openFileOutput("pantry.txt", Context.MODE_PRIVATE);
+                    PrintWriter writer=new PrintWriter(outputStream);
+                    for(Ingredient i:ingredientList){
+                        writer.println(i.getName()+";"+i.getQuantity()+";"+i.getMeasurementUnit());
+                    }
+                    for(Ingredient i:existingPantryItemList){
+                        writer.println(i.getName()+";"+i.getQuantity()+";"+i.getMeasurementUnit());
+                    }
+                    writer.close();
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //now clear shoppingList.txt
+                try {
+                    FileOutputStream outputStream=openFileOutput("shoppingList.txt", Context.MODE_PRIVATE);
+                    PrintWriter writer=new PrintWriter(outputStream);
+                    writer.print("");
+                    writer.close();
+                    outputStream.close();
+                    ingredientList.clear();
+                    Intent pantryIntent=new Intent(ShoppingList.this,Pantry.class);
+                    startActivity(pantryIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
     public void editIngredient(int i) {
