@@ -81,5 +81,4 @@ public class Recipe_Display extends AppCompatActivity {
 
     }
 
-    public void cancelPressed(View v){setResult(RESULT_CANCELED); finish();}
 }
